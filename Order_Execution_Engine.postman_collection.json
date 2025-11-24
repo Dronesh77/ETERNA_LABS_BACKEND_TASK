@@ -1,0 +1,1091 @@
+{
+	"info": {
+		"_postman_id": "order-execution-engine-2024",
+		"name": "Order Execution Engine API",
+		"description": "Complete API collection for Order Execution Engine with Solana DEX routing, WebSocket updates, and queue management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check if the service is running"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create Order - BUY (Alice)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"alice\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"BUY\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 10,\n  \"price\": 50000,\n  \"timeInForce\": \"GTC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Alice wants to BUY 10 BTC at $50,000"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order - SELL (Bob)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"bob\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"SELL\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 5,\n  \"price\": 50000,\n  \"timeInForce\": \"GTC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Bob wants to SELL 5 BTC at $50,000 - Will match with Alice!"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order - SELL (Charlie - Better Price)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"charlie\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"SELL\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 3,\n  \"price\": 49500,\n  \"timeInForce\": \"GTC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Charlie wants to SELL 3 BTC at $49,500 - Better price, will match first!"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order - BUY (David)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"david\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"BUY\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 8,\n  \"price\": 51000,\n  \"timeInForce\": \"GTC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "David wants to BUY 8 BTC at $51,000"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order - SELL (Eve)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"eve\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"SELL\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 2,\n  \"price\": 50000,\n  \"timeInForce\": \"GTC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Eve wants to SELL 2 BTC at $50,000"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order - MARKET BUY",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"frank\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 5,\n  \"timeInForce\": \"IOC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "MARKET order - executes immediately at best available price (no price needed)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Solana Order - SOL/USDC BUY (DEX Routing)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"user1\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 1,\n  \"walletAddress\": \"{{wallet_address}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Solana MARKET order - triggers DEX routing (Raydium vs Meteora), executes on-chain. Status: PENDING → ROUTING → ROUTED → CONFIRMED → FILLED"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Solana Order - SOL/USDC SELL (DEX Routing)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"user2\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"SELL\",\n  \"type\": \"MARKET\",\n  \"quantity\": 2,\n  \"walletAddress\": \"{{wallet_address}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Solana SELL order - triggers DEX routing and on-chain execution"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Queue Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/queue/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"queue",
+								"status"
+							]
+						},
+						"description": "Get current queue status: queue size, processing count, and WebSocket client count"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders/{{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"{{order_id}}"
+							]
+						},
+						"description": "Get details of a specific order by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/users/alice/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"alice",
+								"orders"
+							]
+						},
+						"description": "Get all orders for a specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pending Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders/pending?symbol=BTC/USD",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"pending"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTC/USD",
+									"description": "Trading pair symbol"
+								}
+							]
+						},
+						"description": "Get all pending orders for a symbol"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/orderbook/BTC/USD",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orderbook",
+								"BTC/USD"
+							]
+						},
+						"description": "Get order book showing all buy (bids) and sell (asks) orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders/{{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"{{order_id}}"
+							]
+						},
+						"description": "Cancel a pending order"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trades",
+			"item": [
+				{
+					"name": "Get All Trades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/trades?limit=100",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"trades"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Maximum number of trades to return"
+								}
+							]
+						},
+						"description": "Get all executed trades"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trades by Symbol",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/trades/symbol/BTC/USD?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"trades",
+								"symbol",
+								"BTC/USD"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50",
+									"description": "Maximum number of trades to return"
+								}
+							]
+						},
+						"description": "Get all trades for a specific trading pair"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trades by Order ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/trades/order/{{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"trades",
+								"order",
+								"{{order_id}}"
+							]
+						},
+						"description": "Get all trades associated with a specific order"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Solana DEX Orders",
+			"item": [
+				{
+					"name": "1. Create Solana Order - User 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"user1\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 1,\n  \"walletAddress\": \"{{wallet_address}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "First Solana order - will trigger DEX routing (Raydium vs Meteora comparison)"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Solana Order - User 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"user2\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 2,\n  \"walletAddress\": \"{{wallet_address}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Second Solana order - will be queued and processed concurrently"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Solana Order - User 3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"user3\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 0.5,\n  \"walletAddress\": \"{{wallet_address}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Third Solana order - demonstrates concurrent queue processing"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Queue Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/queue/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"queue",
+								"status"
+							]
+						},
+						"description": "Check queue status: see how many orders are queued/processing"
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Order with Transaction Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders/{{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"{{order_id}}"
+							]
+						},
+						"description": "Get order details including transaction signature, explorer URL, and routing decision"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WebSocket",
+			"item": [
+				{
+					"name": "WebSocket Connection Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "WebSocket endpoint: {{websocket_url}}\n\nConnect to receive real-time order status updates:\n- PENDING → ROUTING → ROUTED → CONFIRMED → FILLED\n\nMessage format:\n{\n  \"type\": \"order_update\",\n  \"orderId\": \"uuid\",\n  \"status\": \"ROUTING\",\n  \"message\": \"Finding best DEX route...\",\n  \"timestamp\": \"2024-01-01T00:00:00.000Z\",\n  \"data\": { ... }\n}\n\nConnection:\n- Postman: Use WebSocket feature and connect to {{websocket_url}}\n- Browser: const ws = new WebSocket('{{websocket_url}}');\n- Node.js: Use 'ws' package to connect"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Video Demo Sequence",
+			"item": [
+				{
+					"name": "1. Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Verify server is running"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Order - Alice BUY",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"alice\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"BUY\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 10,\n  \"price\": 50000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "First order - will be PENDING"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Order - Bob SELL (Will Match!)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"bob\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"SELL\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 5,\n  \"price\": 50000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Second order - will match with Alice and create trade!"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Create Order - Charlie SELL (Better Price)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"charlie\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"SELL\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 3,\n  \"price\": 49500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Third order - better price, will match first!"
+					},
+					"response": []
+				},
+				{
+					"name": "5. Create Order - David BUY",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"david\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"BUY\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 8,\n  \"price\": 51000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Fourth order - high price"
+					},
+					"response": []
+				},
+				{
+					"name": "6. Create Order - Eve SELL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"eve\",\n  \"symbol\": \"BTC/USD\",\n  \"side\": \"SELL\",\n  \"type\": \"LIMIT\",\n  \"quantity\": 2,\n  \"price\": 50000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Fifth order - will match with remaining orders"
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get Order Book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/orderbook/BTC/USD",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orderbook",
+								"BTC/USD"
+							]
+						},
+						"description": "Show current order book with all pending orders"
+					},
+					"response": []
+				},
+				{
+					"name": "8. Get All Trades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/trades",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"trades"
+							]
+						},
+						"description": "Show all executed trades"
+					},
+					"response": []
+				},
+				{
+					"name": "9. Submit 3 Solana Orders Simultaneously",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"demo_user_1\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 1,\n  \"walletAddress\": \"wallet_1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Order 1 of 3 - Submit quickly, then submit orders 2 and 3 to demonstrate concurrent processing"
+					},
+					"response": []
+				},
+				{
+					"name": "10. Submit 3 Solana Orders - Order 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"demo_user_2\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 2,\n  \"walletAddress\": \"wallet_2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Order 2 of 3 - Submit immediately after order 1"
+					},
+					"response": []
+				},
+				{
+					"name": "11. Submit 3 Solana Orders - Order 3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"demo_user_3\",\n  \"symbol\": \"SOL/USDC\",\n  \"side\": \"BUY\",\n  \"type\": \"MARKET\",\n  \"quantity\": 0.5,\n  \"walletAddress\": \"wallet_3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Order 3 of 3 - Submit immediately after order 2 to show concurrent queue processing"
+					},
+					"response": []
+				},
+				{
+					"name": "12. Check Queue Status After Submissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/queue/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"queue",
+								"status"
+							]
+						},
+						"description": "Check queue status to see orders being processed concurrently"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string",
+			"description": "Base URL for the API server (default port 3000)"
+		},
+		{
+			"key": "order_id",
+			"value": "",
+			"type": "string",
+			"description": "Order ID from create order response - will be auto-populated"
+		}
+	]
+}
+
